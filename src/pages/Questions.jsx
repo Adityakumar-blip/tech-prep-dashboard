@@ -1,5 +1,6 @@
 
 import React from 'react';
+import QuestionBankManager from '../components/QuestionBankManager';
 
 const Questions = () => {
   return (
@@ -12,8 +13,7 @@ const Questions = () => {
       </div>
       
       <div className="glass-card p-6">
-        <h2 className="text-xl font-semibold mb-4">Questions will be displayed here</h2>
-        <p className="text-muted-foreground">This page is under construction.</p>
+        <QuestionBankManager />
       </div>
     </>
   );
