@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -11,19 +12,13 @@ import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@
 import { Separator } from "@/components/ui/separator";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useForm } from "react-hook-form";
-import { Search, Filter, Plus, Edit, Trash2, FileQuestion, Code, BookText, Tag, MoreVertical, PlusCircle } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+import { Search, Filter, Plus, Edit, Trash2, FileQuestion, Code, BookText, Tag, MoreVertical } from "lucide-react";
 
 const QuestionBankManager = () => {
-  const { toast } = useToast();
   const [view, setView] = useState("all");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
-  const [isAddTopicDialogOpen, setIsAddTopicDialogOpen] = useState(false);
-  const [isAddCompanyDialogOpen, setIsAddCompanyDialogOpen] = useState(false);
   const [questionType, setQuestionType] = useState("theoretical");
   const [selectedTopic, setSelectedTopic] = useState("all");
-  const [newTopicName, setNewTopicName] = useState("");
-  const [newCompanyName, setNewCompanyName] = useState("");
   
   const form = useForm({
     defaultValues: {
@@ -39,25 +34,35 @@ const QuestionBankManager = () => {
     }
   });
 
-  const [topicsList, setTopicsList] = useState([
+  // Dummy data for the demo
+  const topicsList = [
     { id: "1", name: "Data Structures" },
     { id: "2", name: "Algorithms" },
     { id: "3", name: "System Design" },
     { id: "4", name: "JavaScript" },
     { id: "5", name: "React" },
     { id: "6", name: "Backend" }
-  ]);
+  ];
   
-  const [companiesList, setCompaniesList] = useState([
+  const companiesList = [
     { id: "1", name: "Google" },
     { id: "2", name: "Microsoft" },
     { id: "3", name: "Amazon" },
     { id: "4", name: "Facebook" },
     { id: "5", name: "Apple" },
     { id: "6", name: "Netflix" }
-  ]);
+  ];
   
-  const [questions, setQuestions] = useState([
+  const tagsList = [
+    { id: "1", name: "Arrays" },
+    { id: "2", name: "Strings" },
+    { id: "3", name: "Linked Lists" },
+    { id: "4", name: "Trees" },
+    { id: "5", name: "Graphs" },
+    { id: "6", name: "Dynamic Programming" }
+  ];
+  
+  const questionsList = [
     {
       id: "1",
       title: "Implement a Binary Search Tree",
@@ -94,9 +99,12 @@ const QuestionBankManager = () => {
       solution: "Detailed design approach...",
       tags: ["Hashing", "Databases", "Distributed Systems"]
     }
-  ]);
+  ];
+  
+  const [questions, setQuestions] = useState(questionsList);
   
   const handleSubmit = (data) => {
+    // In a real app, you would save this to your backend
     const newQuestion = {
       id: Date.now().toString(),
       ...data,
@@ -107,74 +115,6 @@ const QuestionBankManager = () => {
     setQuestions([...questions, newQuestion]);
     form.reset();
     setIsAddDialogOpen(false);
-  };
-
-  const handleAddTopic = () => {
-    if (!newTopicName.trim()) {
-      toast({
-        title: "Error",
-        description: "Topic name cannot be empty",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (topicsList.some(topic => topic.name.toLowerCase() === newTopicName.trim().toLowerCase())) {
-      toast({
-        title: "Error",
-        description: "This topic already exists",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const newTopic = {
-      id: (topicsList.length + 1).toString(),
-      name: newTopicName.trim()
-    };
-
-    setTopicsList([...topicsList, newTopic]);
-    setNewTopicName("");
-    setIsAddTopicDialogOpen(false);
-    
-    toast({
-      title: "Success",
-      description: `Topic "${newTopic.name}" has been added`,
-    });
-  };
-
-  const handleAddCompany = () => {
-    if (!newCompanyName.trim()) {
-      toast({
-        title: "Error",
-        description: "Company name cannot be empty",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (companiesList.some(company => company.name.toLowerCase() === newCompanyName.trim().toLowerCase())) {
-      toast({
-        title: "Error",
-        description: "This company already exists",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const newCompany = {
-      id: (companiesList.length + 1).toString(),
-      name: newCompanyName.trim()
-    };
-
-    setCompaniesList([...companiesList, newCompany]);
-    setNewCompanyName("");
-    setIsAddCompanyDialogOpen(false);
-    
-    toast({
-      title: "Success",
-      description: `Company "${newCompany.name}" has been added`,
-    });
   };
   
   const filteredQuestions = questions.filter(question => {
@@ -266,33 +206,23 @@ const QuestionBankManager = () => {
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Topic</FormLabel>
-                          <div className="flex gap-2">
-                            <Select 
-                              onValueChange={field.onChange} 
-                              defaultValue={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select topic" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {topicsList.map(topic => (
-                                  <SelectItem key={topic.id} value={topic.name}>
-                                    {topic.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                            <Button
-                              type="button"
-                              variant="outline"
-                              size="icon"
-                              onClick={() => setIsAddTopicDialogOpen(true)}
-                            >
-                              <PlusCircle className="h-4 w-4" />
-                            </Button>
-                          </div>
+                          <Select 
+                            onValueChange={field.onChange} 
+                            defaultValue={field.value}
+                          >
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select topic" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              {topicsList.map(topic => (
+                                <SelectItem key={topic.id} value={topic.name}>
+                                  {topic.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
                         </FormItem>
                       )}
                     />
@@ -372,22 +302,11 @@ const QuestionBankManager = () => {
                     name="companies"
                     render={() => (
                       <FormItem>
-                        <div className="mb-2 flex items-center justify-between">
-                          <div>
-                            <FormLabel className="text-base">Companies</FormLabel>
-                            <FormDescription>
-                              Select companies that have asked this question
-                            </FormDescription>
-                          </div>
-                          <Button
-                            type="button"
-                            size="sm"
-                            variant="outline"
-                            onClick={() => setIsAddCompanyDialogOpen(true)}
-                          >
-                            <PlusCircle className="mr-2 h-4 w-4" />
-                            Add Company
-                          </Button>
+                        <div className="mb-4">
+                          <FormLabel className="text-base">Companies</FormLabel>
+                          <FormDescription>
+                            Select companies that have asked this question
+                          </FormDescription>
                         </div>
                         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                           {companiesList.map((company) => (
@@ -456,62 +375,6 @@ const QuestionBankManager = () => {
           </DropdownMenu>
         </div>
       </div>
-
-      <Dialog open={isAddTopicDialogOpen} onOpenChange={setIsAddTopicDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Add New Topic</DialogTitle>
-            <DialogDescription>
-              Enter a name for the new topic you want to add.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <FormLabel htmlFor="name" className="text-right">
-                Name
-              </FormLabel>
-              <Input
-                id="name"
-                value={newTopicName}
-                onChange={(e) => setNewTopicName(e.target.value)}
-                className="col-span-3"
-                placeholder="e.g., Machine Learning"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="button" onClick={handleAddTopic}>Add Topic</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog open={isAddCompanyDialogOpen} onOpenChange={setIsAddCompanyDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Add New Company</DialogTitle>
-            <DialogDescription>
-              Enter a name for the new company you want to add.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <FormLabel htmlFor="company-name" className="text-right">
-                Name
-              </FormLabel>
-              <Input
-                id="company-name"
-                value={newCompanyName}
-                onChange={(e) => setNewCompanyName(e.target.value)}
-                className="col-span-3"
-                placeholder="e.g., LinkedIn"
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="button" onClick={handleAddCompany}>Add Company</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
       
       <Tabs defaultValue="all" className="w-full">
         <TabsList className="mb-4 flex h-10 overflow-x-auto">
@@ -527,14 +390,6 @@ const QuestionBankManager = () => {
               {topic.name}
             </TabsTrigger>
           ))}
-          <Button 
-            variant="ghost" 
-            className="px-2 ml-2" 
-            onClick={() => setIsAddTopicDialogOpen(true)}
-          >
-            <PlusCircle className="h-4 w-4 mr-1" />
-            Add Topic
-          </Button>
         </TabsList>
         
         <TabsContent value="all" className="mt-0">
