@@ -1,8 +1,17 @@
-
-import React from 'react';
-import QuestionBankManager from '../components/QuestionBankManager';
+import React, { useEffect } from "react";
+import QuestionBankManager from "../components/QuestionBankManager";
+import useApiStore from "../store/useApiStore";
+import { apiEndPoints } from "../services/apiConfig";
 
 const Questions = () => {
+  const { apis, fetchApi } = useApiStore();
+
+  useEffect(() => {
+    fetchApi("questions", apiEndPoints.question.getAllQuestions);
+  }, []);
+
+  console.log("all questions", apis.questions);
+
   return (
     <>
       <div className="flex items-center justify-between mb-6">
@@ -11,9 +20,9 @@ const Questions = () => {
           Total Questions: 486
         </div>
       </div>
-      
+
       <div className="glass-card p-6">
-        <QuestionBankManager />
+        <QuestionBankManager data={apis?.questions?.data} />
       </div>
     </>
   );
