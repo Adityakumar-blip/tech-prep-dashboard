@@ -1,6 +1,7 @@
 export const apiEndPoints = {
   question: {
-    addQuestion: "/question/createQuestion",
-    getAllQuestions: "/question/getAllQuestions",
+    addQuestion: "question/createQuestion",
+    getAllQuestions: "question/getAllQuestions",
+    getAllTopics: "questionCategory/getAllCategories",
   },
 };

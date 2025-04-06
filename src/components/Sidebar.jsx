@@ -10,6 +10,8 @@ import {
   BookOpen,
   Calendar,
   Tag,
+  CloudRainWind,
+  Dices,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -21,6 +23,7 @@ const Sidebar = () => {
     { icon: LayoutDashboard, label: "Dashboard", href: "/" },
     { icon: Users, label: "Users", href: "/users" },
     { icon: FileQuestion, label: "Questions", href: "/questions" },
+    { icon: Dices, label: "Topics", href: "/topics" },
     { icon: BookOpen, label: "Resources", href: "/resources" },
     { icon: Tag, label: "Categories", href: "/categories" },
     { icon: Calendar, label: "Sessions", href: "/sessions" },
