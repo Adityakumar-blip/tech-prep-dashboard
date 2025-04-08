@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import QuestionBankManager from "../components/QuestionBankManager";
 import useApiStore from "../store/useApiStore";
-import { apiEndPoints } from "../services/apiConfig";
 import TopicManager from "../components/TopicManager";
+import { apiEndPoints } from "../services/apiConfig";
 
 const Topics = () => {
   const { apis, fetchApi } = useApiStore();
 
   useEffect(() => {
-    fetchApi("questions", apiEndPoints.question.getAllQuestions);
+    fetchApi("topics", apiEndPoints.topic.getAllTopics);
   }, []);
 
-  console.log("all questions", apis.questions);
+  console.log("all questions", apis.topics);
 
   return (
     <>

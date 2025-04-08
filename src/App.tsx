@@ -14,6 +14,9 @@ import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Topics from "./pages/Topics";
+import { AuthProvider } from "./context/AuthContext";
+import Login from "./pages/Login";
+import AuthGuard from "./components/AuthGuard";
 
 const queryClient = new QueryClient();
 
@@ -23,20 +26,103 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="users" element={<Users />} />
-            <Route path="questions" element={<Questions />} />
-            <Route path="topics" element={<Topics />} />
-            <Route path="resources" element={<Resources />} />
-            <Route path="categories" element={<Categories />} />
-            <Route path="sessions" element={<Sessions />} />
-            <Route path="analytics" element={<Analytics />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route
+              path="/dashboard"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Dashboard />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="users"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Users />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="questions"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Questions />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="topics"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Topics />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="resources"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Resources />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="categories"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Categories />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="sessions"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Sessions />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="analytics"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Analytics />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+            <Route
+              path="settings"
+              element={
+                <AuthGuard>
+                  <Layout>
+                    <Settings />
+                  </Layout>
+                </AuthGuard>
+              }
+            />
+
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

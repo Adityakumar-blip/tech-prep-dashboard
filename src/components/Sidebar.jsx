@@ -20,7 +20,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   const menuItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/" },
+    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
     { icon: Users, label: "Users", href: "/users" },
     { icon: FileQuestion, label: "Questions", href: "/questions" },
     { icon: Dices, label: "Topics", href: "/topics" },

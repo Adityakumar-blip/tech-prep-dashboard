@@ -46,7 +46,7 @@ import { useForm } from "react-hook-form";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import useApiStore from "../store/useApiStore";
-import { apiEndPoints } from "../services/apiConfig";
+import { apiEndPoints } from "../services/apiConfig.ts";
 
 const AddQuestionModal = ({
   isAddDialogOpen,

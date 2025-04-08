@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { fetchApiData, fetchApiData2 } from "../services/apiService";
+import { fetchApiData, fetchApiData2 } from "../services/apiService.ts";
 
 const autoClearMiddleware = (config) => (set, get, api) => {
   const enhancedSet = (args) => {

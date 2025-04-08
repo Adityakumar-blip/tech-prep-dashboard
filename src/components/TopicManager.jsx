@@ -20,6 +20,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import ReusableTable from "./ReusableTable";
 import AddTopicModal from "./AddTopicModal"; // You'll need to create this component
+import useApiStore from "../store/useApiStore";
+import { apiEndPoints } from "../services/apiConfig";
 
 const TopicManager = ({
   topics = [],
@@ -31,9 +33,12 @@ const TopicManager = ({
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [editingTopic, setEditingTopic] = useState(null);
+  const [addTopic, setAddTopic] = useState(false);
+
+  const { fetchApi, apis, postApiData } = useApiStore();
 
   // Filter topics based on search query
-  const filteredTopics = topics.filter((topic) => {
+  const filteredTopics = apis.topics?.data?.filter((topic) => {
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       return (
@@ -154,7 +159,7 @@ const TopicManager = ({
         <Card>
           <CardContent className="flex flex-col gap-2 p-6">
             <h3 className="text-lg font-medium">Total Topics</h3>
-            <p className="text-3xl font-bold">{topics.length}</p>
+            <p className="text-3xl font-bold">{apis.topics?.data?.length}</p>
           </CardContent>
         </Card>
 
@@ -211,7 +216,7 @@ const TopicManager = ({
       {/* Topics Table */}
       <ReusableTable
         columns={columns}
-        data={filteredTopics}
+        data={filteredTopics || []}
         emptyMessage="No topics found. Create your first topic to get started."
         renderCustomCell={renderCustomCell}
       />
@@ -222,14 +227,26 @@ const TopicManager = ({
           isOpen={isAddDialogOpen}
           setIsOpen={setIsAddDialogOpen}
           topic={editingTopic}
-          onSave={(topicData) => {
-            if (editingTopic) {
-              onEditTopic && onEditTopic({ ...topicData, id: editingTopic.id });
-            } else {
-              onAddTopic && onAddTopic(topicData);
+          onSave={async (topicData) => {
+            console.log("inside onsave");
+            try {
+              if (editingTopic) {
+                await postApiData("editTopic", apiEndPoints.topic.updateTopic, {
+                  ...topicData,
+                  id: editingTopic.id,
+                });
+              } else {
+                await postApiData(
+                  "addTopic",
+                  apiEndPoints.topic.createTopic,
+                  topicData
+                );
+              }
+              setIsAddDialogOpen(false);
+              setEditingTopic(null);
+            } catch (error) {
+              console.error("Failed to save topic:", error);
             }
-            setIsAddDialogOpen(false);
-            setEditingTopic(null);
           }}
         />
       )}

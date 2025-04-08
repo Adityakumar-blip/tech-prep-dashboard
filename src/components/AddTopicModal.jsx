@@ -12,9 +12,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import useApiStore from "@/store/useApiStore.js";
+import { apiEndPoints } from "../services/apiConfig";
 
 const AddTopicModal = ({ isOpen, setIsOpen, topic = null, onSave }) => {
   const isEditing = !!topic;
+
+  const { postApiData } = useApiStore();
 
   const {
     register,
@@ -29,9 +33,10 @@ const AddTopicModal = ({ isOpen, setIsOpen, topic = null, onSave }) => {
   });
 
   const onSubmit = (data) => {
+    console.log("heree");
     onSave({
       ...data,
-      createdAt: topic?.createdAt || new Date().toISOString(),
+      // createdAt: topic?.createdAt || new Date().toISOString(),
     });
   };
 

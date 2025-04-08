@@ -41,68 +41,6 @@ const QuestionBankManager = ({ data }) => {
     { id: "6", name: "Backend" },
   ];
 
-  const companiesList = [
-    { id: "1", name: "Google" },
-    { id: "2", name: "Microsoft" },
-    { id: "3", name: "Amazon" },
-    { id: "4", name: "Facebook" },
-    { id: "5", name: "Apple" },
-    { id: "6", name: "Netflix" },
-  ];
-
-  const tagsList = [
-    { id: "1", name: "Arrays" },
-    { id: "2", name: "Strings" },
-    { id: "3", name: "Linked Lists" },
-    { id: "4", name: "Trees" },
-    { id: "5", name: "Graphs" },
-    { id: "6", name: "Dynamic Programming" },
-  ];
-
-  const questionsList = [
-    {
-      id: "1",
-      title: "Implement a Binary Search Tree",
-      description:
-        "Create a binary search tree with insertion, deletion, and search operations.",
-      topic: "Data Structures",
-      type: "practical",
-      difficulty: "medium",
-      companies: ["Google", "Microsoft"],
-      frequency: "high",
-      solution: "// Implementation details here",
-      tags: ["Trees", "Recursion"],
-    },
-    {
-      id: "2",
-      title: "What is the time complexity of quicksort?",
-      description:
-        "Explain the best, average, and worst-case time complexity of the quicksort algorithm.",
-      topic: "Algorithms",
-      type: "theoretical",
-      difficulty: "easy",
-      companies: ["Amazon", "Facebook"],
-      frequency: "high",
-      solution: "Best/Average: O(n log n), Worst: O(n²)",
-      tags: ["Sorting", "Time Complexity"],
-    },
-    {
-      id: "3",
-      title: "Design a URL shortener",
-      description:
-        "Design a system that converts long URLs into short aliases to save space when sharing URLs.",
-      topic: "System Design",
-      type: "practical",
-      difficulty: "hard",
-      companies: ["Google", "Microsoft", "Amazon"],
-      frequency: "medium",
-      solution: "Detailed design approach...",
-      tags: ["Hashing", "Databases", "Distributed Systems"],
-    },
-  ];
-
-  console.log("data", data);
-
   const filteredQuestions =
     data &&
     data.filter((question) => {
@@ -130,7 +68,7 @@ const QuestionBankManager = ({ data }) => {
         return <span className="font-medium">{row.name}</span>;
 
       case "type":
-        return row.type === "theoretical" ? (
+        return row.type.toLowerCase() === "theoretical" ? (
           <div className="flex items-center">
             <BookText className="mr-2 h-4 w-4" />
             <span>Theoretical</span>
@@ -278,7 +216,7 @@ const QuestionBankManager = ({ data }) => {
       </div>
 
       <Tabs defaultValue="all" className="w-full">
-        <TabsList className="mb-4 flex h-10 overflow-x-auto">
+        {/* <TabsList className="mb-4 flex h-10 overflow-x-auto">
           <TabsTrigger value="all" onClick={() => setSelectedTopic("all")}>
             All Topics
           </TabsTrigger>
@@ -291,7 +229,7 @@ const QuestionBankManager = ({ data }) => {
               {topic.name}
             </TabsTrigger>
           ))}
-        </TabsList>
+        </TabsList> */}
 
         <TabsContent value="all" className="mt-0">
           <ReusableTable
@@ -302,7 +240,7 @@ const QuestionBankManager = ({ data }) => {
           />
         </TabsContent>
 
-        {topicsList.map((topic) => (
+        {/* {topicsList.map((topic) => (
           <TabsContent key={topic.id} value={topic.name} className="mt-0">
             <ReusableTable
               columns={columns}
@@ -311,7 +249,7 @@ const QuestionBankManager = ({ data }) => {
               renderCustomCell={renderCustomCell}
             />
           </TabsContent>
-        ))}
+        ))} */}
       </Tabs>
 
       <AddQuestionModal
